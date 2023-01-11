@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import morgan from 'morgan';
+
 import helmet from 'helmet';
 import fs from 'fs';
 import path from 'path';
@@ -66,8 +66,8 @@ app.use(
   swaggerUi.setup(specs, { explorer: true })
 );
 
-// app.listen(4002, () => {
-//   console.log(`Example app listening on port 4002!`);
-// });
+app.listen(4002, () => {
+  console.log(`Example app listening on port 4002!`);
+});
 
 export default app;
