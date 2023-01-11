@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-
+import cors from 'cors'
 import helmet from 'helmet';
 import fs from 'fs';
 import path from 'path';
@@ -16,7 +16,7 @@ const app = express();
 //   path.join(__dirname, '../access.log'),
 //   { flags: 'a' }
 // );
-
+app.use(cors());
 app.use(helmet());
 // app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.json({ limit: '50mb' }));
