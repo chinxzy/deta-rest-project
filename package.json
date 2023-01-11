@@ -18,7 +18,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "env NODE_ENV=development nodemon index.js",
-    "start": "env NODE_ENV=production node index.js"
+    "start": "env NODE_ENV=production node index.js",
+    "build": "env NODE_ENV=production node index.js"
   },
   "author": "",
   "license": "ISC",
