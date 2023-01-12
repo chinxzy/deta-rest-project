@@ -52,7 +52,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://chinxzy-rest.onrender.com",
+        url: "http://localhost:4002",
       },
     ],
   },

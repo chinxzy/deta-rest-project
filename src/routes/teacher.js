@@ -12,6 +12,7 @@ const router = Router();
  *     teacher:
  *       type: object
  *       required:
+ *         - teacherId
  *         - teacher_firstname
  *         - teacher_lastname
  *         - gender
@@ -48,6 +49,8 @@ const router = Router();
  *           type: string
  *         description: gets specific gender
  *     summary: gets all teachers
+ *     tags:
+ *       - teacher
  *     responses:
  *        200:
  *          description: the list of teachers
@@ -57,9 +60,29 @@ const router = Router();
  *                  type: array
  *                  items:
  *                   $ref: '#/components/schemas/teacher'
+ *
+ * /teacher/{teacherId}:
+ *   get:
+ *     parameters:
+ *      - in: path
+ *        name: teacherId
+ *     summary: gets single teachers
+ *     tags:
+ *       - teacher
+ *     responses:
+ *        200:
+ *          description: single entry of teachers
+ *          content:
+ *             application/json:
+ *              schema:
+ *                  type: array
+ *                  items:
+ *                   $ref: '#/components/schemas/teacher'
  * 
  * /teacher/createTeacher:
  *   post:
+ *     tags:
+ *       - teacher
  *     summary: Create a new teacher entry
  *     requestBody:
  *       required: true
@@ -76,6 +99,7 @@ const router = Router();
  *               $ref: '#/components/schemas/teacher'
  *       500:
  *         description: Some server error
+ * 
  */
 
 router.get('/', teacher.getAllTeachers)

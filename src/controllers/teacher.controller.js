@@ -11,6 +11,7 @@ exports.getAllTeachers = async (req, res) => {
     const allTeachers = await Teacher.findAll({
         attributes: [],
         attributes: [
+            'teacherId',
             'teacher_firstname',
             'teacher_lastname',
             'gender',
@@ -55,6 +56,7 @@ exports.getTeacher = async (req, res) => {
         },
         attributes: [],
         attributes: [
+            'teacherId',
             'teacher_firstname',
             'teacher_lastname',
             'gender',

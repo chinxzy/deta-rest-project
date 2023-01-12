@@ -62,42 +62,6 @@ exports.getAllUsers = async (req, res) => {
   return res.send({ "users": allUsers })
 }
 
-//get all teachers
-exports.getAllTeachers = async (req, res) => {
-  const gender = req.query.gender
-
-  const allTeachers = await Teacher.findAll({
-    attributes: [],
-    attributes: [
-      'teacher_firstname',
-      'teacher_lastname',
-      'gender',
-      'classname',
-      'classtype',
-
-
-    ]
-  })
-
-  // if (gender) {
-  //   const genderUser = await User.findAll({
-  //     // where: {
-  //     //   gender: {
-  //     //     [Op.iLike]: gender
-  //     //   }
-  //     // }
-  //   })
-  //   return res.send({ "users": genderUser })
-  // }
-  // console.log(req.query)
-
-  if (!allTeachers) {
-    return res.status(404).send({
-      message: "No users found"
-    })
-  }
-  return res.send({ "teachers": allTeachers })
-}
 
 //get single student
 
@@ -139,71 +103,32 @@ exports.getUser = async (req, res) => {
   return res.send(user);
 };
 
-//get single teacher
+//create student
 
-exports.getTeacher = async (req, res) => {
-  const teacherId = req.params.id;
-  console.log(teacherId)
-
-  const user = await Teacher.findOne({
-
-    where: {
-      teacherId,
-
-    },
-    attributes: [],
-    attributes: [
-      'teacher_firstname',
-      'teacher_lastname',
-      'gender',
-      'classname',
-      'classtype',
-
-
-    ]
-  });
-
-  if (!user) {
+exports.createUser = async (req, res) => {
+  const { firstname, lastname, gender, classtype, classname, teacherId } = req.body;
+  if (!firstname || !lastname || !gender || !classtype || !classname || !teacherId) {
     return res.status(400).send({
-      message: `No user found with the id ${teacherId}`,
+      message: 'Please provide all fields to create a student entry!',
     });
   }
 
-  return res.send(user);
+  try {
+    let newUser = await User.create({
+      firstname,
+      lastname,
+      gender,
+      classtype,
+      classname,
+      teacherId
+    });
+    return res.send(newUser);
+  } catch (err) {
+    return res.status(500).send({
+      message: `Error: ${err.message}`,
+    });
+  }
 };
-// exports.createUser = async (req, res) => {
-//   const { username, password, gender } = req.body;
-//   if (!username || !password || !gender) {
-//     return res.status(400).send({
-//       message: 'Please provide a username, gender and a password to create a user!',
-//     });
-//   }
-
-//   let usernameExists = await User.findOne({
-//     where: {
-//       username,
-//     },
-//   });
-
-//   if (usernameExists) {
-//     return res.status(400).send({
-//       message: 'An account with that username already exists!',
-//     });
-//   }
-
-//   try {
-//     let newUser = await User.create({
-//       username,
-//       password,
-//       gender
-//     });
-//     return res.send(newUser);
-//   } catch (err) {
-//     return res.status(500).send({
-//       message: `Error: ${err.message}`,
-//     });
-//   }
-// };
 
 // exports.deleteUser = async (req, res) => {
 //   const { id } = req.body;
