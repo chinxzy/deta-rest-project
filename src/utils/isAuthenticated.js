@@ -1,23 +1,24 @@
-require('dotenv/config');
-const db = require('../models');
-const User = db.rest.models.user;
-
-export const gender = async (req, res, next) => {
-
-  const { gender } = req.query;
-
-  const user = await User.findOne({
-    where: {
-      gender,
-    },
-  });
-
-  if (user) {
-    return next();
-  } else {
-    return res.status(200).send({
-
+const jwt = require('jsonwebtoken');
+module.exports = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    res.status(401).json({
+      status: 'fail',
+      message: 'Unauthorized!',
     });
   }
-
+  const tokenPayLoad = authHeader.split(' ')[1];
+  try {
+    const user = jwt.verify(tokenPayLoad, process.env.TOKEN_KEY,
+      {
+        expiresIn: "2h",
+      });
+    req.user = user;
+    next();
+  } catch (error) {
+    res.status(401).json({
+      status: 'fail',
+      message: 'Unauthorized!',
+    });
+  }
 };

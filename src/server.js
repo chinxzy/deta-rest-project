@@ -24,6 +24,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/teacher', routes.teacher)
 app.use('/user', routes.user);
+app.use('/admin', routes.admin)
 
 
 // app.use((req, res) => {
@@ -53,8 +54,10 @@ const options = {
     servers: [
       {
         url: "https://chinxzy-rest.onrender.com",
+
       },
     ],
+
   },
   apis: ["./src/routes/*.js"],
 };
