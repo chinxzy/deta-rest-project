@@ -22,9 +22,10 @@ app.use(helmet());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-app.use('/teacher', routes.teacher)
+app.use('/teacher', routes.teacher);
 app.use('/user', routes.user);
-app.use('/admin', routes.admin)
+app.use('/admin', routes.admin);
+app.use('/subject', routes.subject)
 
 
 // app.use((req, res) => {
@@ -53,7 +54,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://chinxzy-rest.onrender.com",
+        url: "http://localhost:4002",
 
       },
     ],

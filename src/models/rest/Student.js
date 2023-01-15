@@ -32,14 +32,14 @@ const student = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-            classtype: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
             teacherId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
 
+            },
+            classtypeId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             },
         },
         {
@@ -50,7 +50,22 @@ const student = (sequelize, DataTypes) => {
     Student.associate = (models) => {
         Student.belongsTo(models.teacher, {
             foreignKey: 'teacherId'
+        });
+        Student.belongsToMany(models.subject, { through: 'student_subject' });
+
+        Student.belongsToMany(models.classtype, {
+            through: {
+                model: 'classtypeJoin',
+                unique: false,
+                scope: {
+                    classtypeJoinType: 'student'
+                }
+            },
+            as: 'classtypeStudent',
+            foreignkey: 'classtypeJoinId',
+            constraints: false
         })
+
     }
     Student.sync();
 
