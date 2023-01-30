@@ -17,8 +17,6 @@ const router = Router();
  *         - teacher_firstname
  *         - teacher_lastname
  *         - gender
- *         - classname
- *         - classtype
  *         
  *       properties:
  *         teacher_firstname:
@@ -30,12 +28,6 @@ const router = Router();
  *         gender:
  *           type: string
  *           description: The gender of the teacher
- *         classname:
- *           type: string
- *           description: the name of the teacher's class
- *         classtype:
- *           type: string
- *           description: The teacher's class type
  *         
  *       
  */

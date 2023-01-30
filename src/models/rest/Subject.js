@@ -11,11 +11,7 @@ const subject = (sequelize, DataTypes) => {
             subject_name: {
                 type: DataTypes.STRING,
                 allowNull: false
-            },
-            classtypeId: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
+            }
 
         },
         {
@@ -27,18 +23,7 @@ const subject = (sequelize, DataTypes) => {
     Subject.associate = (models) => {
         Subject.belongsToMany(models.student, { through: 'student_subject' });
 
-        Subject.belongsToMany(models.classtype, {
-            through: {
-                model: 'classtypeJoin',
-                unique: false,
-                scope: {
-                    classtypeJoinType: 'subject'
-                }
-            },
-            as: 'classtypeSubject',
-            foreignkey: 'classtypeJoinId',
-            constraints: false
-        })
+        Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
 
     }
     Subject.sync();

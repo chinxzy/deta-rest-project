@@ -26,6 +26,7 @@ app.use('/teacher', routes.teacher);
 app.use('/user', routes.user);
 app.use('/admin', routes.admin);
 app.use('/subject', routes.subject)
+app.use('/class', routes.classname)
 
 
 // app.use((req, res) => {

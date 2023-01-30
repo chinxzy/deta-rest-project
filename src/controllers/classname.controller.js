@@ -1,91 +1,94 @@
 const db = require('../models');
 const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
+const Classname = db.rest.models.classname
 const Teacher = db.rest.models.teacher
 
+//get all classes
+exports.getAllClassname = async (req, res) => {
 
-//get all teachers
-exports.getAllTeachers = async (req, res) => {
-    const gender = req.query.gender
-
-    const allTeachers = await Teacher.findAll({
-        attributes: [],
-        attributes: [
-            'teacherId',
-            'teacher_firstname',
-            'teacher_lastname',
-            'gender',
-        ]
-    })
-
-    if (gender) {
-        const genderUser = await Teacher.findAll({
-            where: {
-                gender: {
-                    [Op.iLike]: gender
-                }
-            }
-        })
-        return res.send({ "teachers": genderUser })
-    }
-    console.log(req.query)
-
-    if (!allTeachers) {
-        return res.status(404).send({
-            message: "No users found"
-        })
-    }
-    return res.send({ "teachers": allTeachers })
-}
-
-//get single teacher
-
-exports.getTeacher = async (req, res) => {
-    const teacherId = req.params.id;
-    console.log(teacherId)
-
-    const user = await Teacher.findOne({
-
-        where: {
-            teacherId,
-
+    const allClassname = await Classname.findAll({
+        //include teacher model
+        include: {
+            model: Teacher, attributes: [],
         },
         attributes: [],
         attributes: [
-            'teacherId',
-            'teacher_firstname',
-            'teacher_lastname',
-            'gender',
+            'classnameId',
+            'classname',
+            [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
+            [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
+        ]
+    })
+
+
+    if (!allClassname) {
+        return res.status(404).send({
+            message: "No classes found"
+        })
+    }
+    return res.send({ "classes": allClassname })
+}
+
+//get single class
+
+exports.getClass = async (req, res) => {
+    const classnameId = req.params.id;
+
+    const classname = await Classname.findOne({
+
+        where: {
+            classnameId,
+
+        },
+        include: {
+            model: Teacher, attributes: [],
+      
+          },
+        attributes: [],
+        attributes: [
+            'classnameId',
+            'classname',
+            [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
+            [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
         ]
     });
 
-    if (!user) {
+    if (!classname) {
         return res.status(400).send({
-            message: `No user found with the id ${teacherId}`,
+            message: `No class found with the id ${classnameId}`,
         });
     }
 
-    return res.send(user);
+    return res.send({ "class": classname });
 };
-exports.createTeacher = async (req, res) => {
-    const { teacher_firstname, teacher_lastname, gender } = req.body;
-    if (!teacher_firstname || !teacher_firstname || !gender) {
+
+// add new class entry
+exports.createClass = async (req, res) => {
+    const { classname, teacherId } = req.body;
+    if (!classname || !teacherId) {
         return res.status(400).send({
-            message: 'Please provide all fields to create a teacher entry!',
+            message: 'Please provide all fields to create a class entry!',
         });
     }
 
     try {
-        let newTeacher = await Teacher.create({
-            teacher_firstname,
-            teacher_lastname,
-            gender,
+        let newClass = await Classname.create({
+            classname,
+            teacherId,
         });
-        return res.send(newTeacher);
+        return res.send(newClass);
     } catch (err) {
-        return res.status(500).send({
+        if (err.message == 'Validation error') {
+            return res.status(500).send({
+                message: "one or two of the records already exist"
+            })
+        } else{
+            return res.status(500).send({
             message: `Error: ${err.message}`,
         });
+        }
+        
     }
 };
 
