@@ -1,87 +1,68 @@
 const db = require('../models');
 const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
+const SubType = db.rest.models.classtype_subject
 const Subject = db.rest.models.subject
-
+const Classtype = db.rest.models.classtype
 
 //get all subjects
-exports.getAllSubjects = async (req, res) => {
-    const classtype = req.query.classtype
+exports.getAllSubType = async (req, res) => {
 
-    const allSubjects = await Subject.findAll({
+    const allSubType = await SubType.findAll({
         attributes: [],
+        include:[{
+            model: Subject, attributes:[]
+        },
+        {
+            model: Classtype, attributes:[]
+        }
+        ],
         attributes: [
-            'subjectId',
-            'subject_name',
+            'id',
+            [Sequelize.col("subject.subject_name"),"subject_name"],
+            [Sequelize.col("classtype.classtype_name"), "classtype_name"],
         ]
     })
 
-    if (!allSubjects) {
+    if (!allSubType) {
         return res.status(404).send({
-            message: "No subject found"
+            message: "No data found"
         })
     }
-    return res.send({ "subjects": allSubjects })
+    return res.send({ "subtype": allSubType })
 }
 
-//get single subject
-
-exports.getSubject = async (req, res) => {
-    const subjectId = req.params.id;
-
-    const subject = await Subject.findOne({
-
-        where: {
-            subjectId,
-
-        },
-        attributes: [],
-        attributes: [
-            'subjectId',
-            'subject_name',
-
-
-        ]
-    });
-
-    if (!subject) {
-        return res.status(400).send({
-            message: `No subject found with the id ${subjectId}`,
-        });
-    }
-
-    return res.send(subject);
-};
 
 //create new subject entry
-exports.createSubject = async (req, res) => {
-    const { subject_name } = req.body;
-    if (!subject_name ) {
-        return res.status(400).send({
-            message: 'Please provide all fields to create a subject entry!',
-        });
+exports.createSubType= async (req, res) => {
+    const {subjectId, classtypeId} = req.body;
+    if (!subjectId || !classtypeId) {
+        res.status(400).send({
+            message: "please provide all fields to link subject to classtype"
+        })
     }
-
-    let subjectExists = await Subject.findOne({
+    const linkExists = await SubType.findOne ({
         where: {
-            subject_name: {
-                [Op.iLike]: subject_name
+            subjectId: {
+                [Op.eq]: subjectId
             },
+            classtypeId: {
+                [Op.eq]: classtypeId
+            }
         }
     });
 
-    if (subjectExists) {
+    if (linkExists) {
         return res.status(400).send({
-            message: 'This subject already exists',
+            message: 'This subject is already linked to this classtype',
         });
-    }
-
+    } 
     try {
-        let newSubject = await Subject.create({
-            subject_name,
-
-        });
-        return res.send(newSubject);
+       const link =await SubType.create({
+        subjectId,
+        classtypeId
+       });
+       res.status(200).send(link)
     } catch (err) {
         return res.status(500).send({
             message: `Error: ${err.message}`,

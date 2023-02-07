@@ -17,7 +17,12 @@ const classname = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 unique: true
+            },
+            classtypeId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
             }
+
         },
         {
             timestamps: true,
@@ -26,11 +31,14 @@ const classname = (sequelize, DataTypes) => {
     );
 
     Classname.associate = models => {
-        Classname.hasMany(models.student, {
-            foreignKey: 'classnameId'
+        Classname.belongsTo(models.classtype, {
+            foreignKey: 'classtypeId'
         })
         Classname.belongsTo(models.teacher, {
             foreignKey: 'teacherId'
+        })
+        Classname.hasMany(models.student, {
+            foreignKey: 'classnameId'
         })
     }
     Classname.sync();

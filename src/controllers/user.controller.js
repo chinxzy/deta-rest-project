@@ -2,64 +2,77 @@ const db = require('../models');
 const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
 const User = db.rest.models.student;
-const Teacher = db.rest.models.teacher
+const Classname = db.rest.models.classname;
+const Teacher = db.rest.models.teacher;
+const Classtype = db.rest.models.classtype
 
 //get all students
 exports.getAllUsers = async (req, res) => {
   const gender = req.query.gender
 
   const allUsers = await User.findAll({
-    include: {
-      model: Teacher, attributes: [],
+    include:[
+      {model: Classname, attributes: [],
+        include: [{
+        model: Teacher,
+        attributes: [],
+        
+      },
+      {
+        model: Classtype,
+        attributes: [],
+        
+      }]},
+      
 
-    },
+    ],
     attributes: [],
     attributes: [
       'firstname',
       'lastname',
       'gender',
-      'classname',
-      'classtype',
-      [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
-      [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
+      [Sequelize.col("classname.classname"), "classname"], 
+      [Sequelize.col("classname.teacher.teacher_firstname"), "teacher_firstname"],
+      [Sequelize.col("classname.teacher.teacher_lastname"), "teacher_lastname"],
+      [Sequelize.col("classname.classtype.classtype_name"), "classtype_name"]
 
     ]
   })
 
-  if (gender) {
-    const genderUser = await User.findAll({
-      where: {
-        gender: {
-          [Op.iLike]: gender
-        }
+  // if (gender) {
+  //   const genderUser = await User.findAll({
+  //     where: {
+  //       gender: {
+  //         [Op.iLike]: gender
+  //       }
 
-      },
-      include: {
-        model: Teacher, attributes: [],
+  //     },
+  //     include: {
+  //       model: Teacher, attributes: [],
 
-      },
-      attributes: [],
-      attributes: [
-        'firstname',
-        'lastname',
-        'gender',
-        'classname',
-        'classtype',
-        [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
-        [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
+  //     },
+  //     attributes: [],
+  //     attributes: [
+  //       'firstname',
+  //       'lastname',
+  //       'gender',
+  //       'classname',
+  //       'classtype',
+  //       [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
+  //       [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
 
-      ]
-    })
-    return res.send({ "users": genderUser })
-  }
-  console.log(req.query)
+  //     ]
+  //   })
+  //   return res.send({ "users": genderUser })
+  // }
+  // console.log(req.query)
 
   if (!allUsers) {
     return res.status(404).send({
       message: "No users found"
     })
   }
-  return res.send({ "users": allUsers })
+  return res.send({ "students": allUsers })
 }
 
 
@@ -77,19 +90,31 @@ exports.getUser = async (req, res) => {
       }
 
     },
-    include: {
-      model: Teacher, attributes: [],
+    include:[
+      {model: Classname, attributes: [],
+        include: [{
+        model: Teacher,
+        attributes: [],
+        
+      },
+      {
+        model: Classtype,
+        attributes: [],
+        
+      }]},
+      {model: Classtype, attributes: []},
+      
 
-    },
+    ],
     attributes: [],
     attributes: [
       'firstname',
       'lastname',
       'gender',
-      'classname',
-      'classtype',
-      [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
-      [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
+      [Sequelize.col("classname.classname"), "classname"], 
+      [Sequelize.col("classname.teacher.teacher_firstname"), "teacher_firstname"],
+      [Sequelize.col("classname.teacher.teacher_lastname"), "teacher_lastname"],
+      [Sequelize.col("classname.classtype.classtype_name"), "classtype_name"]
 
     ]
   });
@@ -100,14 +125,14 @@ exports.getUser = async (req, res) => {
     });
   }
 
-  return res.send(user);
+  return res.send({ "student": allUsers });
 };
 
 //create student
 
 exports.createUser = async (req, res) => {
-  const { firstname, lastname, gender, classtype, classname, teacherId } = req.body;
-  if (!firstname || !lastname || !gender || !classtype || !classname || !teacherId) {
+  const { firstname, lastname, gender, classnameId } = req.body;
+  if (!firstname || !lastname || !gender || !classnameId ) {
     return res.status(400).send({
       message: 'Please provide all fields to create a student entry!',
     });
@@ -118,9 +143,7 @@ exports.createUser = async (req, res) => {
       firstname,
       lastname,
       gender,
-      classtype,
-      classname,
-      teacherId
+      classnameId,
     });
     return res.send(newUser);
   } catch (err) {

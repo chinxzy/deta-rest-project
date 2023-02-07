@@ -16,9 +16,9 @@ const router = Router();
  *         - lastname
  *         - gender
  *         - classname
- *         -  classtype
- *         -  teacher_firstname
- *         -  teacher_lastname
+ *         - teacher_firstname
+ *         - teacher_lastname
+ *         - classtype
  *       properties:
  *         firstname:
  *           type: string
@@ -32,15 +32,15 @@ const router = Router();
  *         classname:
  *           type: string
  *           description: the name of the student's class
- *         classtype:
- *           type: string
- *           description: The student's class type
  *         teacher_firstname:
  *           type: string
- *           description: The first name of the teacher of the student
+ *           description: The student's class teacher's firstname
  *         teacher_lastname:
  *           type: string
- *           description: The last name of the teacher of the student
+ *           description: The student's class teacher's lastname
+ *         classtype:
+ *           type: string
+ *           description: The classtype of the student
  * 
  *     studentPost:
  *       type: object
@@ -48,9 +48,7 @@ const router = Router();
  *         - firstname
  *         - lastname
  *         - gender
- *         - classname
- *         -  classtype
- *         -  teacherId
+ *         - classnameId
  *       properties:
  *         firstname:
  *           type: string
@@ -61,15 +59,9 @@ const router = Router();
  *         gender:
  *           type: string
  *           description: The gender of the student
- *         classname:
- *           type: string
- *           description: the name of the student's class
- *         classtype:
- *           type: string
- *           description: The student's class type
- *         teacherId:
+ *         classnameId:
  *           type: integer
- *           description: The Id of the teacher of the student
+ *           description: the id of the student's class
  *         
  */
 /**
@@ -113,13 +105,7 @@ const router = Router();
  *     tags:
  *       - student
  *     requestBody:
- *       required:
- *         - firstname
- *         - lastname
- *         - gender
- *         - classname
- *         - classtype
- *         - teacherId
+ *       required: true
  *       content:
  *         application/json:
  *           schema:

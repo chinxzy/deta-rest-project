@@ -20,12 +20,12 @@ const classtype = (sequelize, DataTypes) => {
     );
 
     Classtype.associate = models => {
-        Classtype.hasMany(models.student, {
+        Classtype.hasMany(models.classname, {
             foreignKey: 'classtypeId'
         })
-        Classtype.belongsToMany(models.subject, { through: 'classtype_subject' });
+        // Classtype.belongsToMany(models.subject, { through: 'classtype_subject' });
     }
-    Classtype.sync();
+    Classtype.sync({alter: true});
 
     return Classtype;
 };

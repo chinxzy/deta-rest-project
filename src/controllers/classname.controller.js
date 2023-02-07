@@ -3,19 +3,26 @@ const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
 const Classname = db.rest.models.classname
 const Teacher = db.rest.models.teacher
+const Classtype = db.rest.models.classtype
 
 //get all classes
 exports.getAllClassname = async (req, res) => {
 
     const allClassname = await Classname.findAll({
         //include teacher model
-        include: {
-            model: Teacher, attributes: [],
+        include:[ 
+            {
+            model: Teacher, attributes: []
         },
+        {
+            model: Classtype, attributes: [] 
+        }
+        ],
         attributes: [],
         attributes: [
             'classnameId',
             'classname',
+            [Sequelize.col("classtype.classtype_name"), "classtype_name"],
             [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
             [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
         ]
@@ -41,14 +48,19 @@ exports.getClass = async (req, res) => {
             classnameId,
 
         },
-        include: {
-            model: Teacher, attributes: [],
-      
-          },
+        include:[ 
+            {
+            model: Teacher, attributes: []
+        },
+        {
+            model: Classtype, attributes: [] 
+        }
+        ],
         attributes: [],
         attributes: [
             'classnameId',
             'classname',
+            [Sequelize.col("classtype.classtype_name"), "classtype_name"],
             [Sequelize.col("teacher.teacher_firstname"), "teacher_firstname"],
             [Sequelize.col("teacher.teacher_lastname"), "teacher_lastname"],
         ]
@@ -65,8 +77,8 @@ exports.getClass = async (req, res) => {
 
 // add new class entry
 exports.createClass = async (req, res) => {
-    const { classname, teacherId } = req.body;
-    if (!classname || !teacherId) {
+    const { classname, teacherId, classtypeId } = req.body;
+    if (!classname || !teacherId || !classtypeId) {
         return res.status(400).send({
             message: 'Please provide all fields to create a class entry!',
         });
@@ -76,6 +88,7 @@ exports.createClass = async (req, res) => {
         let newClass = await Classname.create({
             classname,
             teacherId,
+            classtypeId
         });
         return res.send(newClass);
     } catch (err) {

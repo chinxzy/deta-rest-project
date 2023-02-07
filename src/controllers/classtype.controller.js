@@ -1,87 +1,43 @@
 const db = require('../models');
 const { Op } = require("sequelize");
 const Sequelize = require('sequelize');
-const Subject = db.rest.models.subject
+const Classtype = db.rest.models.classtype
 
 
-//get all subjects
-exports.getAllSubjects = async (req, res) => {
-    const classtype = req.query.classtype
+//get all classtype
+exports.getClasstype = async (req, res) => {
 
-    const allSubjects = await Subject.findAll({
+    const classtype = await Classtype.findAll({
         attributes: [],
         attributes: [
-            'subjectId',
-            'subject_name',
+            'classtypeId',
+            'classtype_name',
+        
         ]
     })
 
-    if (!allSubjects) {
+
+    if (!classtype) {
         return res.status(404).send({
-            message: "No subject found"
+            message: "No classtype found"
         })
     }
-    return res.send({ "subjects": allSubjects })
+    return res.send({ "classtype": classtype })
 }
 
-//get single subject
-
-exports.getSubject = async (req, res) => {
-    const subjectId = req.params.id;
-
-    const subject = await Subject.findOne({
-
-        where: {
-            subjectId,
-
-        },
-        attributes: [],
-        attributes: [
-            'subjectId',
-            'subject_name',
-
-
-        ]
-    });
-
-    if (!subject) {
+exports.createClasstype = async (req, res) => {
+    const { classtype_name } = req.body;
+    if (!classtype_name) {
         return res.status(400).send({
-            message: `No subject found with the id ${subjectId}`,
-        });
-    }
-
-    return res.send(subject);
-};
-
-//create new subject entry
-exports.createSubject = async (req, res) => {
-    const { subject_name } = req.body;
-    if (!subject_name ) {
-        return res.status(400).send({
-            message: 'Please provide all fields to create a subject entry!',
-        });
-    }
-
-    let subjectExists = await Subject.findOne({
-        where: {
-            subject_name: {
-                [Op.iLike]: subject_name
-            },
-        }
-    });
-
-    if (subjectExists) {
-        return res.status(400).send({
-            message: 'This subject already exists',
+            message: 'Please provide all fields to create a classtype entry!',
         });
     }
 
     try {
-        let newSubject = await Subject.create({
-            subject_name,
-
+        let newClasstype = await Classtype.create({
+            classtype_name,
         });
-        return res.send(newSubject);
+        return res.send(newClasstype);
     } catch (err) {
         return res.status(500).send({
             message: `Error: ${err.message}`,

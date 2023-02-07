@@ -15,28 +15,17 @@ const router = Router();
  *       required:
  *         - subjectId
  *         - subject_name
- *         - classtype
  *         
  *       properties:
  *         subject_name:
  *           type: string
  *           description: The  name of the subject
- *         classtype:
- *           type: string
- *           description: The subject's associated classtype
- *         
- *       
+ *      
  */
 /**
  * @swagger
  * /subject:
  *   get:
- *     parameters:
- *       - in: query
- *         name: classtype
- *         schema:
- *           type: string
- *         description: gets specific classtype
  *     summary: gets all subjects
  *     tags:
  *       - subject

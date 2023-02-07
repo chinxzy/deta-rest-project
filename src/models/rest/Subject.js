@@ -23,10 +23,10 @@ const subject = (sequelize, DataTypes) => {
     Subject.associate = (models) => {
         Subject.belongsToMany(models.student, { through: 'student_subject' });
 
-        Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
+        // Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
 
     }
-    Subject.sync();
+    Subject.sync({alter: true});
 
     return Subject;
 };

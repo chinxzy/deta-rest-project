@@ -32,10 +32,6 @@ const student = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false
             },
-            classtypeId: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-            },
         },
         {
             timestamps: true,
@@ -43,9 +39,6 @@ const student = (sequelize, DataTypes) => {
         }
     );
     Student.associate = (models) => {
-        Student.belongsTo(models.classtype, {
-            foreignKey: 'classtypeId'
-        });
         Student.belongsTo(models.classname, {
             foreignKey: 'classnameId'
         });

@@ -27,6 +27,8 @@ app.use('/user', routes.user);
 app.use('/admin', routes.admin);
 app.use('/subject', routes.subject)
 app.use('/class', routes.classname)
+app.use('/classtype', routes.classtype)
+app.use('/subtype', routes.subtype)
 
 
 // app.use((req, res) => {

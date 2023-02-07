@@ -17,6 +17,7 @@ const router = Router();
  *         - classname
  *         - teacher_firstname
  *         - teacher_lastname
+ *         - classtype
  *         
  *       properties:
  *         classname:
@@ -28,6 +29,9 @@ const router = Router();
  *         teacher_lastname:
  *           type: string
  *           description: The last name of the class teacher
+ *         classtype:
+ *           type: string
+ *           description: The classtype of the class
  * 
  *     classnamePost:  
  *       type: object
@@ -39,6 +43,9 @@ const router = Router();
  *           type: string
  *           description: The name of the class
  *         teacherId:
+ *           type: integer
+ *           description: The Id of the class teacher
+ *         classtypeId:
  *           type: integer
  *           description: The Id of the class teacher
  */

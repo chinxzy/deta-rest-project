@@ -14,26 +14,26 @@ const classtype_subject = (sequelize, DataTypes) => {
             classtypeId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references: {
-                    model: 'classtype',
-                    key: 'classtypeId'
-                }
+                
             },
             subjectId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                references: {
-                    model: 'subject',
-                    key: 'subjectId'
-                }
+                
             },
         },
-        {
-            timestamps: true,
-            freezeTableName: true,
-        }
+        { timestamps: false }
     );
-    Classtype_subject.sync();
+    Classtype_subject.associate = models => {
+      Classtype_subject.belongsTo(models.classtype, {
+        foreignKey: 'classtypeId'
+      });
+      Classtype_subject.belongsTo(models.subject, {
+        foreignKey: 'subjectId'
+      });  
+    }
+    
+    Classtype_subject.sync({alter: true});
 
     return Classtype_subject;
 };
