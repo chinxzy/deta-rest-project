@@ -41,7 +41,7 @@ const classname = (sequelize, DataTypes) => {
             foreignKey: 'classnameId'
         })
     }
-    Classname.sync();
+    Classname.sync({force: true});
 
     return Classname;
 };

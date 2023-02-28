@@ -46,7 +46,7 @@ const student = (sequelize, DataTypes) => {
 
 
     }
-    Student.sync();
+    Student.sync({force: true});
 
     return Student;
 };

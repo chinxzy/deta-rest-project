@@ -5,8 +5,10 @@ const SubType = db.rest.models.classtype_subject
 const Subject = db.rest.models.subject
 const Classtype = db.rest.models.classtype
 
-//get all subjects
+//get all subjects linked to classtype
 exports.getAllSubType = async (req, res) => {
+    const subjectId = req.query.subjectId
+    const classtypeId = req.query.classtypeId
 
     const allSubType = await SubType.findAll({
         attributes: [],
@@ -24,6 +26,48 @@ exports.getAllSubType = async (req, res) => {
         ]
     })
 
+    if(subjectId) {
+        const getClasstype = await SubType.findAll({
+            where: {
+                subjectId: {
+                    [Op.eq]: subjectId
+                }
+            },
+            attributes: [],
+            include:[
+            {
+                model: Classtype, attributes:[]
+            }
+            ],
+            attributes: [
+                [Sequelize.col("classtype.classtype_name"), "classtype_name"],
+            ]
+
+        })
+        return res.send({"classtype": getClasstype})
+    }
+
+    if(classtypeId) {
+        const getSubjects = await SubType.findAll({
+            where: {
+                classtypeId: {
+                    [Op.eq]: classtypeId
+                }
+            },
+            attributes: [],
+            include:[
+            {
+                model: Subject, attributes:[]
+            }
+            ],
+            attributes: [
+                [Sequelize.col("subject.subject_name"), "subject_name"],
+            ]
+
+        })
+        return res.send({"subjects": getSubjects})
+    }
+
     if (!allSubType) {
         return res.status(404).send({
             message: "No data found"
@@ -33,7 +77,7 @@ exports.getAllSubType = async (req, res) => {
 }
 
 
-//create new subject entry
+//create new subject-classtype entry
 exports.createSubType= async (req, res) => {
     const {subjectId, classtypeId} = req.body;
     if (!subjectId || !classtypeId) {

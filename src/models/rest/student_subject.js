@@ -33,7 +33,7 @@ const student_subject = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
-    Student_subject.sync();
+    Student_subject.sync({force: true});
 
     return Student_subject;
 };

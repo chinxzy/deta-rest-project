@@ -26,7 +26,7 @@ const subject = (sequelize, DataTypes) => {
         // Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
 
     }
-    Subject.sync({alter: true});
+    Subject.sync({force: true});
 
     return Subject;
 };

@@ -42,6 +42,19 @@ const router = Router();
  * @swagger
  * /subtype:
  *   get:
+ *     parameters:
+ *       - in: query
+ *         name: subjectId
+ *         schema:
+ *           type: integer
+ *         description: gets specific classtype which offer the subject
+ * 
+ *       - in: query
+ *         name: classtypeId
+ *         schema:
+ *           type: integer
+ *         description: gets specific subjects under the classtypes
+ * 
  *     summary: gets all subject and their classtypes
  *     tags:
  *       - subject_classtype

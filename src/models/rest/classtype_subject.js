@@ -33,7 +33,7 @@ const classtype_subject = (sequelize, DataTypes) => {
       });  
     }
     
-    Classtype_subject.sync({alter: true});
+    Classtype_subject.sync({force: true});
 
     return Classtype_subject;
 };

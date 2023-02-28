@@ -33,7 +33,7 @@ const teacher = (sequelize, DataTypes) => {
 
        
     }
-    Teacher.sync();
+    Teacher.sync({force: true});
 
     return Teacher;
 };
