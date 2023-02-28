@@ -39,7 +39,7 @@ const admin = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
-    Admin.sync({force: true});
+    Admin.sync();
 
     return Admin;
 };
