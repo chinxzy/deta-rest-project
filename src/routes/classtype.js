@@ -4,7 +4,7 @@ import { Router } from 'express';
 // const auth = require('../utils/isAuthenticated');
 
 
-const classtype = require('../controllers/classtype.controller.js');
+import * as classtype from '../controllers/classtype.controller.js';
 const router = Router();
 /**
  * @swagger

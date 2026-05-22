@@ -1,24 +1,22 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
 const Classname = db.rest.models.classname
 const Teacher = db.rest.models.teacher
 const Classtype = db.rest.models.classtype
 
 //get all classes
-exports.getAllClassname = async (req, res) => {
+export const getAllClassname = async (req, res) => {
 
     const allClassname = await Classname.findAll({
         //include teacher model
-        include:[ 
+        include: [
             {
-            model: Teacher, attributes: []
-        },
-        {
-            model: Classtype, attributes: [] 
-        }
+                model: Teacher, attributes: []
+            },
+            {
+                model: Classtype, attributes: []
+            }
         ],
-        attributes: [],
         attributes: [
             'classnameId',
             'classname',
@@ -39,7 +37,7 @@ exports.getAllClassname = async (req, res) => {
 
 //get single class
 
-exports.getClass = async (req, res) => {
+export const getClass = async (req, res) => {
     const classnameId = req.params.id;
 
     const classname = await Classname.findOne({
@@ -48,15 +46,14 @@ exports.getClass = async (req, res) => {
             classnameId,
 
         },
-        include:[ 
+        include: [
             {
-            model: Teacher, attributes: []
-        },
-        {
-            model: Classtype, attributes: [] 
-        }
+                model: Teacher, attributes: []
+            },
+            {
+                model: Classtype, attributes: []
+            }
         ],
-        attributes: [],
         attributes: [
             'classnameId',
             'classname',
@@ -76,7 +73,7 @@ exports.getClass = async (req, res) => {
 };
 
 // add new class entry
-exports.createClass = async (req, res) => {
+export const createClass = async (req, res) => {
     const { classname, teacherId, classtypeId } = req.body;
     if (!classname || !teacherId || !classtypeId) {
         return res.status(400).send({
@@ -96,12 +93,12 @@ exports.createClass = async (req, res) => {
             return res.status(500).send({
                 message: "one or two of the records already exist"
             })
-        } else{
+        } else {
             return res.status(500).send({
-            message: `Error: ${err.message}`,
-        });
+                message: `Error: ${err.message}`,
+            });
         }
-        
+
     }
 };
 

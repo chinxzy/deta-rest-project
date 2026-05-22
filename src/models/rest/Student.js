@@ -1,4 +1,3 @@
-import { DataTypes } from 'sequelize'
 
 
 /**
@@ -12,9 +11,9 @@ const student = (sequelize, DataTypes) => {
         'student',
         {
             studentId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             firstname: {
                 type: DataTypes.STRING,
@@ -29,9 +28,23 @@ const student = (sequelize, DataTypes) => {
                 allowNull: false
             },
             classnameId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false
             },
+            dateOfBirth: {
+                type: DataTypes.DATEONLY,
+                allowNull: false
+            },
+            addmissionNo: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true
+            },
+            status: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: "active"
+            }
         },
         {
             timestamps: true,
@@ -46,8 +59,6 @@ const student = (sequelize, DataTypes) => {
 
 
     }
-    Student.sync({force: true});
-
     return Student;
 };
 

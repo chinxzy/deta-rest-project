@@ -1,10 +1,10 @@
 
 
 import { Router } from 'express';
-// const auth = require('../utils/isAuthenticated');
 
+import auth from '../utils/isAuthenticated.js';
 
-const classname = require('../controllers/classname.controller.js');
+import * as classname from '../controllers/classname.controller.js';
 const router = Router();
 /**
  * @swagger
@@ -105,9 +105,9 @@ const router = Router();
  * 
  */
 
-router.get('/', classname.getAllClassname)
+router.get('/', auth, classname.getAllClassname)
 
-router.get('/:id', classname.getClass);
+router.get('/:id', auth, classname.getClass);
 
 router.post('/createClass', classname.createClass);
 

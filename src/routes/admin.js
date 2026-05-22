@@ -1,9 +1,9 @@
 
 
 import { Router } from 'express';
-const auth = require('../utils/isAuthenticated');
+import auth from '../utils/isAuthenticated.js';
 
-const admin = require('../controllers/admin.controller.js');
+import * as admin from '../controllers/admin.controller.js';
 const router = Router();
 /**
  * @swagger
@@ -75,11 +75,11 @@ const router = Router();
  *     admin-login:
  *       type: object
  *       required:
- *         - admin_email
+ *         - email
  *         - password
  *         
  *       properties:
- *         admin_email:
+ *         email:
  *           type: string
  *           description: The admin's email
  *         password:
@@ -158,7 +158,7 @@ router.get('/', auth, admin.getAllAdmins);
 
 // router.get('/:id', admin.getadmin);
 
-router.post('/createAdmin', admin.registerAdmin);
+router.post('/createAdmin', auth, admin.registerAdmin);
 
 router.post('/login', admin.adminLogin);
 

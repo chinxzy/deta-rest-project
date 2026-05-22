@@ -4,9 +4,9 @@ const teacher = (sequelize, DataTypes) => {
         'teacher',
         {
             teacherId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             teacher_firstname: {
                 type: DataTypes.STRING,
@@ -20,21 +20,32 @@ const teacher = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false
             },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true
+            },
+            phone: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true
+            }
 
         },
         {
             timestamps: true,
             freezeTableName: true,
+
+
+
         }
     );
 
     Teacher.associate = models => {
         Teacher.hasOne(models.classname)
+        Teacher.belongsToMany(models.subject, { through: 'teacher_subject' });
 
-       
     }
-    Teacher.sync({force: true});
-
     return Teacher;
 };
 

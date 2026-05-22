@@ -1,18 +1,16 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
 const Classtype = db.rest.models.classtype
 
 
 //get all classtype
-exports.getClasstype = async (req, res) => {
+export const getClasstype = async (req, res) => {
 
     const classtype = await Classtype.findAll({
-        attributes: [],
         attributes: [
             'classtypeId',
             'classtype_name',
-        
+
         ]
     })
 
@@ -25,7 +23,7 @@ exports.getClasstype = async (req, res) => {
     return res.send({ "classtype": classtype })
 }
 
-exports.createClasstype = async (req, res) => {
+export const createClasstype = async (req, res) => {
     const { classtype_name } = req.body;
     if (!classtype_name) {
         return res.status(400).send({

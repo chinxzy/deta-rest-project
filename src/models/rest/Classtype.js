@@ -4,9 +4,9 @@ const classtype = (sequelize, DataTypes) => {
         'classtype',
         {
             classtypeId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             classtype_name: {
                 type: DataTypes.STRING,
@@ -23,10 +23,8 @@ const classtype = (sequelize, DataTypes) => {
         Classtype.hasMany(models.classname, {
             foreignKey: 'classtypeId'
         })
-        // Classtype.belongsToMany(models.subject, { through: 'classtype_subject' });
+        Classtype.belongsToMany(models.subject, { through: 'classtype_subject' });
     }
-    Classtype.sync({force: true});
-
     return Classtype;
 };
 

@@ -1,4 +1,3 @@
-import { DataTypes } from 'sequelize'
 
 
 /**
@@ -8,34 +7,39 @@ import { DataTypes } from 'sequelize'
  * @returns 
  */
 const classtype_subject = (sequelize, DataTypes) => {
-    const Classtype_subject = sequelize.define(
-        'classtype_subject',
-        {
-            classtypeId: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                
-            },
-            subjectId: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                
-            },
-        },
-        { timestamps: false }
-    );
-    Classtype_subject.associate = models => {
-      Classtype_subject.belongsTo(models.classtype, {
-        foreignKey: 'classtypeId'
-      });
-      Classtype_subject.belongsTo(models.subject, {
-        foreignKey: 'subjectId'
-      });  
-    }
-    
-    Classtype_subject.sync({force: true});
+  const Classtype_subject = sequelize.define(
+    'classtype_subject',
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      classtypeId: {
+        type: DataTypes.UUID,
+        allowNull: false,
 
-    return Classtype_subject;
+      },
+      subjectId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+
+      },
+    },
+    {
+      timestamps: false,
+    }
+  );
+  Classtype_subject.associate = models => {
+    Classtype_subject.belongsTo(models.classtype, {
+      foreignKey: 'classtypeId'
+    });
+    Classtype_subject.belongsTo(models.subject, {
+      foreignKey: 'subjectId'
+    });
+  }
+
+  return Classtype_subject;
 };
 
 export default classtype_subject;

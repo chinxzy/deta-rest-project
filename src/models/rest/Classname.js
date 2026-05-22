@@ -4,9 +4,9 @@ const classname = (sequelize, DataTypes) => {
         'classname',
         {
             classnameId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             classname: {
                 type: DataTypes.STRING,
@@ -14,12 +14,12 @@ const classname = (sequelize, DataTypes) => {
                 unique: true
             },
             teacherId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
                 unique: true
             },
             classtypeId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
             }
 
@@ -27,6 +27,7 @@ const classname = (sequelize, DataTypes) => {
         {
             timestamps: true,
             freezeTableName: true,
+            tableName: 'classname',
         }
     );
 
@@ -41,8 +42,6 @@ const classname = (sequelize, DataTypes) => {
             foreignKey: 'classnameId'
         })
     }
-    Classname.sync({force: true});
-
     return Classname;
 };
 

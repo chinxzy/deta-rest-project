@@ -4,7 +4,7 @@ import { Router } from 'express';
 // const auth = require('../utils/isAuthenticated');
 
 
-const subject = require('../controllers/subject.controller.js');
+import * as subject from '../controllers/subject.controller.js';
 const router = Router();
 /**
  * @swagger

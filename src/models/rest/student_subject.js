@@ -1,4 +1,3 @@
-import { DataTypes } from 'sequelize'
 
 
 /**
@@ -11,8 +10,13 @@ const student_subject = (sequelize, DataTypes) => {
     const Student_subject = sequelize.define(
         'student_subject',
         {
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true,
+            },
             studentId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
                 references: {
                     model: 'student',
@@ -20,7 +24,7 @@ const student_subject = (sequelize, DataTypes) => {
                 }
             },
             subjectId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
                 allowNull: false,
                 references: {
                     model: 'subject',
@@ -33,8 +37,6 @@ const student_subject = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
-    Student_subject.sync({force: true});
-
     return Student_subject;
 };
 

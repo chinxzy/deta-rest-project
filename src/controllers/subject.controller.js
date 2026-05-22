@@ -1,15 +1,13 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
 const Subject = db.rest.models.subject
 
 
 //get all subjects
-exports.getAllSubjects = async (req, res) => {
+export const getAllSubjects = async (req, res) => {
     const classtype = req.query.classtype
 
     const allSubjects = await Subject.findAll({
-        attributes: [],
         attributes: [
             'subjectId',
             'subject_name',
@@ -26,7 +24,7 @@ exports.getAllSubjects = async (req, res) => {
 
 //get single subject
 
-exports.getSubject = async (req, res) => {
+export const getSubject = async (req, res) => {
     const subjectId = req.params.id;
 
     const subject = await Subject.findOne({
@@ -35,7 +33,6 @@ exports.getSubject = async (req, res) => {
             subjectId,
 
         },
-        attributes: [],
         attributes: [
             'subjectId',
             'subject_name',
@@ -54,9 +51,9 @@ exports.getSubject = async (req, res) => {
 };
 
 //create new subject entry
-exports.createSubject = async (req, res) => {
+export const createSubject = async (req, res) => {
     const { subject_name } = req.body;
-    if (!subject_name ) {
+    if (!subject_name) {
         return res.status(400).send({
             message: 'Please provide all fields to create a subject entry!',
         });

@@ -1,11 +1,12 @@
-require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
+import 'dotenv/config';
+import fs from 'fs';
+import path from 'path';
+import Sequelize, { DataTypes } from 'sequelize';
+import allConfig from '../config/config.js';
 
-const config = require(__dirname + '/../config/config.js')[env];
+const basename = path.basename(import.meta.filename);
+const env = process.env.NODE_ENV || 'development';
+const config = allConfig[env];
 
 let db = {};
 
@@ -22,17 +23,18 @@ for (let i = 0; i < databases.length; i++) {
   );
 }
 
-/**Add the Database Models**/
-fs.readdirSync(__dirname + '/rest')
+const modelFiles = fs.readdirSync(import.meta.dirname + '/rest')
   .filter((file) => {
     return (
       file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
     );
-  })
-  .forEach((file) => {
-    var model = db.rest.import(path.join(__dirname + '/rest', file));
-    db[model.name] = model;
   });
+
+for (const file of modelFiles) {
+  const { default: modelFn } = await import(`./rest/${file}`);
+  const model = modelFn(db.rest, DataTypes);
+  db[model.name] = model;
+}
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -40,4 +42,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-module.exports = db;
+// Creates tables if they don't exist, leaves existing tables untouched
+await db.rest.sync({ force: false });
+
+export default db;

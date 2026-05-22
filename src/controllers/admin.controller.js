@@ -1,13 +1,10 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
-const Admin = db.rest.models.admin
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+const Admin = db.rest.models.admin;
 
-
-//register admin
-exports.registerAdmin = async (req, res) => {
+export const registerAdmin = async (req, res) => {
     try {
         //get admin input
 
@@ -15,9 +12,9 @@ exports.registerAdmin = async (req, res) => {
 
         //validate admin input
 
-        if (!admin_firstname && !admin_lastname && !admin_email && !password &&
-            !gender && !role) {
-            res.status(400).send("All input is required");
+        if (!admin_firstname || !admin_lastname || !admin_email || !password ||
+            !gender || !role) {
+            return res.status(400).send("All input is required");
         }
 
         //check if admin already exist
@@ -49,7 +46,7 @@ exports.registerAdmin = async (req, res) => {
             gender,
             role
         });
-        res.status(201).json({
+        return res.status(201).json({
             status: 'success',
             message: 'Admin Registered',
             data: {
@@ -59,9 +56,6 @@ exports.registerAdmin = async (req, res) => {
                 }
             }
         })
-
-
-        return res.send(admin)
     } catch (error) {
         console.log(error)
     }
@@ -69,31 +63,34 @@ exports.registerAdmin = async (req, res) => {
 
 //admin login
 
-exports.adminLogin = async (req, res) => {
+export const adminLogin = async (req, res) => {
     try {
-        const { admin_email, password } = req.body;
+        const { email, password } = req.body;
 
         //validate input
 
-        if (!admin_email || !password) {
-            res.status(400).send("All input is required")
+        if (!email || !password) {
+            return res.status(400).send("Username or Password is incorrect")
         }
 
         //check is user exist
         const AdminUser = await Admin.findOne({
             where: {
                 admin_email: {
-                    [Op.iLike]: admin_email
+                    [Op.iLike]: email
                 }
             }
         });
 
         if (!AdminUser) {
-            res.status(419).send("User with these credential doesn't exist")
+            return res.status(419).send("User with these credential doesn't exist")
         } else if (await bcrypt.compare(password, AdminUser.password)) {
             const tokenPayLoad = {
                 email: AdminUser.admin_email,
-                role: AdminUser.role
+                role: AdminUser.role,
+                userId: AdminUser.adminId,
+                firstName: AdminUser.admin_firstname,
+                lastName: AdminUser.admin_lastname
             };
 
             const accessToken = jwt.sign(tokenPayLoad, process.env.TOKEN_KEY,
@@ -101,7 +98,15 @@ exports.adminLogin = async (req, res) => {
                     expiresIn: "2h",
                 });
             res.status(201).json({
-                accessToken
+
+                token: accessToken,
+                email: AdminUser.admin_email,
+                role: AdminUser.role,
+                userId: AdminUser.adminId,
+                firstName: AdminUser.admin_firstname,
+                lastName: AdminUser.admin_lastname
+
+
             });
         } else {
             res.status(419).send("Wrong password")
@@ -113,11 +118,10 @@ exports.adminLogin = async (req, res) => {
 }
 
 //get all admins
-exports.getAllAdmins = async (req, res) => {
+export const getAllAdmins = async (req, res) => {
     const role = req.query.role
 
     const allAdmins = await Admin.findAll({
-        attributes: [],
         attributes: [
             'adminId',
             'admin_firstname',

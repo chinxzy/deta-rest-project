@@ -4,7 +4,7 @@ import { Router } from 'express';
 // const auth = require('../utils/isAuthenticated');
 
 
-const teacher = require('../controllers/teacher.controller.js');
+import * as teacher from '../controllers/teacher.controller.js';
 const router = Router();
 /**
  * @swagger

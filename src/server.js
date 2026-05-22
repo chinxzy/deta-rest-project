@@ -1,12 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
-import cors from 'cors'
+import cors from 'cors';
 import helmet from 'helmet';
-import fs from 'fs';
-import path from 'path';
-import routes from './routes';
+import routes from './routes/index.js';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express'
+import swaggerUi from 'swagger-ui-express';
 
 // import { isAuthenticated } from './utils/isAuthenticated';
 
@@ -57,7 +55,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://chinxzy-rest.onrender.com",
+        url: "http://localhost:4002",
 
       },
     ],
@@ -76,5 +74,3 @@ app.use(
 app.listen(4002, () => {
   console.log(`Example app listening on port 4002!`);
 });
-
-export default app;

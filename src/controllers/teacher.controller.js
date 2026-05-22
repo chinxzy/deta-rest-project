@@ -1,15 +1,13 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
 const Teacher = db.rest.models.teacher
 
 
 //get all teachers
-exports.getAllTeachers = async (req, res) => {
+export const getAllTeachers = async (req, res) => {
     const gender = req.query.gender
 
     const allTeachers = await Teacher.findAll({
-        attributes: [],
         attributes: [
             'teacherId',
             'teacher_firstname',
@@ -40,7 +38,7 @@ exports.getAllTeachers = async (req, res) => {
 
 //get single teacher
 
-exports.getTeacher = async (req, res) => {
+export const getTeacher = async (req, res) => {
     const teacherId = req.params.id;
     console.log(teacherId)
 
@@ -50,7 +48,6 @@ exports.getTeacher = async (req, res) => {
             teacherId,
 
         },
-        attributes: [],
         attributes: [
             'teacherId',
             'teacher_firstname',
@@ -67,9 +64,9 @@ exports.getTeacher = async (req, res) => {
 
     return res.send(user);
 };
-exports.createTeacher = async (req, res) => {
+export const createTeacher = async (req, res) => {
     const { teacher_firstname, teacher_lastname, gender } = req.body;
-    if (!teacher_firstname || !teacher_firstname || !gender) {
+    if (!teacher_firstname || !teacher_lastname || !gender) {
         return res.status(400).send({
             message: 'Please provide all fields to create a teacher entry!',
         });

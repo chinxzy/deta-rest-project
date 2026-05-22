@@ -3,7 +3,7 @@
 import { Router } from 'express';
 // import { isAuthenticated } from './utils/isAuthenticated';
 
-const user = require('../controllers/user.controller.js');
+import * as user from '../controllers/user.controller.js';
 const router = Router();
 /**
  * @swagger

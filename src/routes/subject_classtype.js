@@ -4,7 +4,7 @@ import { Router } from 'express';
 // const auth = require('../utils/isAuthenticated');
 
 
-const subType = require('../controllers/subject_classtype.controller');
+import * as subType from '../controllers/subject_classtype.controller.js';
 const router = Router();
 /**
  * @swagger

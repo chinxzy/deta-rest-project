@@ -4,9 +4,9 @@ const admin = (sequelize, DataTypes) => {
         'admin',
         {
             adminId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             admin_firstname: {
                 type: DataTypes.STRING,
@@ -39,8 +39,6 @@ const admin = (sequelize, DataTypes) => {
             freezeTableName: true,
         }
     );
-    Admin.sync();
-
     return Admin;
 };
 

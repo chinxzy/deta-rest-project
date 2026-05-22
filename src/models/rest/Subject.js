@@ -4,13 +4,18 @@ const subject = (sequelize, DataTypes) => {
         'subject',
         {
             subjectId: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
                 primaryKey: true,
-                autoIncrement: true,
             },
             subject_name: {
                 type: DataTypes.STRING,
                 allowNull: false
+            },
+            code: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true
             }
 
         },
@@ -23,11 +28,11 @@ const subject = (sequelize, DataTypes) => {
     Subject.associate = (models) => {
         Subject.belongsToMany(models.student, { through: 'student_subject' });
 
-        // Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
+        Subject.belongsToMany(models.classtype, { through: 'classtype_subject' });
+
+        Subject.belongsToMany(models.teacher, { through: 'teacher_subject' });
 
     }
-    Subject.sync({force: true});
-
     return Subject;
 };
 

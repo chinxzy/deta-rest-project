@@ -1,32 +1,30 @@
-const db = require('../models');
-const { Op } = require("sequelize");
-const Sequelize = require('sequelize');
+import db from '../models/index.js';
+import Sequelize, { Op } from 'sequelize';
 const SubType = db.rest.models.classtype_subject
 const Subject = db.rest.models.subject
 const Classtype = db.rest.models.classtype
 
 //get all subjects linked to classtype
-exports.getAllSubType = async (req, res) => {
+export const getAllSubType = async (req, res) => {
     const subjectId = req.query.subjectId
     const classtypeId = req.query.classtypeId
 
     const allSubType = await SubType.findAll({
-        attributes: [],
-        include:[{
-            model: Subject, attributes:[]
+        include: [{
+            model: Subject, attributes: []
         },
         {
-            model: Classtype, attributes:[]
+            model: Classtype, attributes: []
         }
         ],
         attributes: [
             'id',
-            [Sequelize.col("subject.subject_name"),"subject_name"],
+            [Sequelize.col("subject.subject_name"), "subject_name"],
             [Sequelize.col("classtype.classtype_name"), "classtype_name"],
         ]
     })
 
-    if(subjectId) {
+    if (subjectId) {
         const getClasstype = await SubType.findAll({
             where: {
                 subjectId: {
@@ -34,20 +32,20 @@ exports.getAllSubType = async (req, res) => {
                 }
             },
             attributes: [],
-            include:[
-            {
-                model: Classtype, attributes:[]
-            }
+            include: [
+                {
+                    model: Classtype, attributes: []
+                }
             ],
             attributes: [
                 [Sequelize.col("classtype.classtype_name"), "classtype_name"],
             ]
 
         })
-        return res.send({"classtype": getClasstype})
+        return res.send({ "classtype": getClasstype })
     }
 
-    if(classtypeId) {
+    if (classtypeId) {
         const getSubjects = await SubType.findAll({
             where: {
                 classtypeId: {
@@ -55,17 +53,17 @@ exports.getAllSubType = async (req, res) => {
                 }
             },
             attributes: [],
-            include:[
-            {
-                model: Subject, attributes:[]
-            }
+            include: [
+                {
+                    model: Subject, attributes: []
+                }
             ],
             attributes: [
                 [Sequelize.col("subject.subject_name"), "subject_name"],
             ]
 
         })
-        return res.send({"subjects": getSubjects})
+        return res.send({ "subjects": getSubjects })
     }
 
     if (!allSubType) {
@@ -78,14 +76,14 @@ exports.getAllSubType = async (req, res) => {
 
 
 //create new subject-classtype entry
-exports.createSubType= async (req, res) => {
-    const {subjectId, classtypeId} = req.body;
+export const createSubType = async (req, res) => {
+    const { subjectId, classtypeId } = req.body;
     if (!subjectId || !classtypeId) {
-        res.status(400).send({
+        return res.status(400).send({
             message: "please provide all fields to link subject to classtype"
         })
     }
-    const linkExists = await SubType.findOne ({
+    const linkExists = await SubType.findOne({
         where: {
             subjectId: {
                 [Op.eq]: subjectId
@@ -100,13 +98,13 @@ exports.createSubType= async (req, res) => {
         return res.status(400).send({
             message: 'This subject is already linked to this classtype',
         });
-    } 
+    }
     try {
-       const link =await SubType.create({
-        subjectId,
-        classtypeId
-       });
-       res.status(200).send(link)
+        const link = await SubType.create({
+            subjectId,
+            classtypeId
+        });
+        res.status(200).send(link)
     } catch (err) {
         return res.status(500).send({
             message: `Error: ${err.message}`,
