@@ -1,11 +1,11 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
+const db = require('../models/index.js');
+const { Sequelize, Op } = require('sequelize');
 const SubType = db.rest.models.classtype_subject
 const Subject = db.rest.models.subject
 const Classtype = db.rest.models.classtype
 
 //get all subjects linked to classtype
-export const getAllSubType = async (req, res) => {
+const getAllSubType = async (req, res) => {
     const subjectId = req.query.subjectId
     const classtypeId = req.query.classtypeId
 
@@ -76,7 +76,7 @@ export const getAllSubType = async (req, res) => {
 
 
 //create new subject-classtype entry
-export const createSubType = async (req, res) => {
+const createSubType = async (req, res) => {
     const { subjectId, classtypeId } = req.body;
     if (!subjectId || !classtypeId) {
         return res.status(400).send({
@@ -178,3 +178,5 @@ export const createSubType = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { getAllSubType, createSubType };
+

@@ -1,10 +1,10 @@
 
 
-import { Router } from 'express';
+const { Router } = require('express');
 // const auth = require('../utils/isAuthenticated');
 
 
-import * as teacher from '../controllers/teacher.controller.js';
+const teacher = require('../controllers/teacher.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -41,6 +41,11 @@ const router = Router();
  *         schema:
  *           type: string
  *         description: gets specific gender
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: search query for teachers
  *     summary: gets all teachers
  *     tags:
  *       - teacher
@@ -105,4 +110,6 @@ router.post('/createTeacher', teacher.createTeacher);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

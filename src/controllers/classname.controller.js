@@ -1,11 +1,11 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
+const db = require('../models/index.js');
+const { Op } = require('sequelize');
 const Classname = db.rest.models.classname
 const Teacher = db.rest.models.teacher
 const Classtype = db.rest.models.classtype
 
 //get all classes
-export const getAllClassname = async (req, res) => {
+const getAllClassname = async (req, res) => {
 
     const allClassname = await Classname.findAll({
         //include teacher model
@@ -37,7 +37,7 @@ export const getAllClassname = async (req, res) => {
 
 //get single class
 
-export const getClass = async (req, res) => {
+const getClass = async (req, res) => {
     const classnameId = req.params.id;
 
     const classname = await Classname.findOne({
@@ -73,7 +73,7 @@ export const getClass = async (req, res) => {
 };
 
 // add new class entry
-export const createClass = async (req, res) => {
+const createClass = async (req, res) => {
     const { classname, teacherId, classtypeId } = req.body;
     if (!classname || !teacherId || !classtypeId) {
         return res.status(400).send({
@@ -168,3 +168,5 @@ export const createClass = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { getAllClassname, getClass, createClass };
+

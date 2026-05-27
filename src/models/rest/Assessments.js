@@ -71,4 +71,6 @@ const assessment = (sequelize, DataTypes) => {
     return Assessment;
 };
 
-export default assessment;
+module.exports = assessment;
+
+

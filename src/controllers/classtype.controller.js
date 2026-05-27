@@ -1,10 +1,10 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
+const db = require('../models/index.js');
+const { Op } = require('sequelize');
 const Classtype = db.rest.models.classtype
 
 
 //get all classtype
-export const getClasstype = async (req, res) => {
+const getClasstype = async (req, res) => {
 
     const classtype = await Classtype.findAll({
         attributes: [
@@ -23,7 +23,7 @@ export const getClasstype = async (req, res) => {
     return res.send({ "classtype": classtype })
 }
 
-export const createClasstype = async (req, res) => {
+const createClasstype = async (req, res) => {
     const { classtype_name } = req.body;
     if (!classtype_name) {
         return res.status(400).send({
@@ -109,3 +109,5 @@ export const createClasstype = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { getClasstype, createClasstype };
+

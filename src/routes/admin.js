@@ -1,9 +1,9 @@
 
 
-import { Router } from 'express';
-import auth from '../utils/isAuthenticated.js';
+const { Router } = require('express');
+const auth = require('../utils/isAuthenticated.js');
 
-import * as admin from '../controllers/admin.controller.js';
+const admin = require('../controllers/admin.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -166,4 +166,6 @@ router.post('/login', admin.adminLogin);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

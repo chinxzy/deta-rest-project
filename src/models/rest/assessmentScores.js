@@ -50,4 +50,6 @@ const assessment_scores = (sequelize, DataTypes) => {
     return AssessmentScores;
 };
 
-export default assessment_scores;
+module.exports = assessment_scores;
+
+

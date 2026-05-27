@@ -1,11 +1,12 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
+const db = require('../models/index.js');
+const { Op } = require('sequelize');
 const Teacher = db.rest.models.teacher
 
 
 //get all teachers
-export const getAllTeachers = async (req, res) => {
+const getAllTeachers = async (req, res) => {
     const gender = req.query.gender
+    const query = req.query.query
 
     const allTeachers = await Teacher.findAll({
         attributes: [
@@ -13,6 +14,8 @@ export const getAllTeachers = async (req, res) => {
             'teacher_firstname',
             'teacher_lastname',
             'gender',
+            'email',
+            'phone'
         ]
     })
 
@@ -26,6 +29,19 @@ export const getAllTeachers = async (req, res) => {
         })
         return res.send({ "teachers": genderUser })
     }
+    if (query) {
+        const queriedData = await Teacher.findAll({
+            where: {
+                [Op.or]: [
+                    { phone: { [Op.iLike]: `%${query}%` } },
+                    { teacher_firstname: { [Op.iLike]: `%${query}%` } },
+                    { teacher_lastname: { [Op.iLike]: `%${query}%` } },
+                    { email: { [Op.iLike]: `%${query}%` } },
+                ]
+            }
+        })
+        return res.send({ "teachers": queriedData })
+    }
     console.log(req.query)
 
     if (!allTeachers) {
@@ -38,7 +54,7 @@ export const getAllTeachers = async (req, res) => {
 
 //get single teacher
 
-export const getTeacher = async (req, res) => {
+const getTeacher = async (req, res) => {
     const teacherId = req.params.id;
     console.log(teacherId)
 
@@ -53,6 +69,8 @@ export const getTeacher = async (req, res) => {
             'teacher_firstname',
             'teacher_lastname',
             'gender',
+            'email',
+            'phone'
         ]
     });
 
@@ -64,9 +82,9 @@ export const getTeacher = async (req, res) => {
 
     return res.send(user);
 };
-export const createTeacher = async (req, res) => {
-    const { teacher_firstname, teacher_lastname, gender } = req.body;
-    if (!teacher_firstname || !teacher_lastname || !gender) {
+const createTeacher = async (req, res) => {
+    const { teacher_firstname, teacher_lastname, gender, email, phone } = req.body;
+    if (!teacher_firstname || !teacher_lastname || !gender || !email || !phone) {
         return res.status(400).send({
             message: 'Please provide all fields to create a teacher entry!',
         });
@@ -77,6 +95,8 @@ export const createTeacher = async (req, res) => {
             teacher_firstname,
             teacher_lastname,
             gender,
+            email,
+            phone
         });
         return res.send(newTeacher);
     } catch (err) {
@@ -152,3 +172,5 @@ export const createTeacher = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { getAllTeachers, getTeacher, createTeacher };
+

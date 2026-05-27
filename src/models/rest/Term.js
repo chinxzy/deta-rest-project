@@ -46,4 +46,6 @@ const term = (sequelize, DataTypes) => {
     return Term;
 };
 
-export default term;
+module.exports = term;
+
+

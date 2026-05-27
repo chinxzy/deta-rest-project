@@ -58,4 +58,6 @@ const attendance = (sequelize, DataTypes) => {
     return Attendance;
 };
 
-export default attendance;
+module.exports = attendance;
+
+

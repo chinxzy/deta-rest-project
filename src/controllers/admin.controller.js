@@ -1,10 +1,10 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const db = require('../models/index.js');
+const { Op } = require('sequelize');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Admin = db.rest.models.admin;
 
-export const registerAdmin = async (req, res) => {
+const registerAdmin = async (req, res) => {
     try {
         //get admin input
 
@@ -63,7 +63,7 @@ export const registerAdmin = async (req, res) => {
 
 //admin login
 
-export const adminLogin = async (req, res) => {
+const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -118,7 +118,7 @@ export const adminLogin = async (req, res) => {
 }
 
 //get all admins
-export const getAllAdmins = async (req, res) => {
+const getAllAdmins = async (req, res) => {
     const role = req.query.role
 
     const allAdmins = await Admin.findAll({
@@ -287,3 +287,5 @@ export const getAllAdmins = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { registerAdmin, adminLogin, getAllAdmins };
+

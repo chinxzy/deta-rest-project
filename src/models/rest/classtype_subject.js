@@ -42,4 +42,6 @@ const classtype_subject = (sequelize, DataTypes) => {
   return Classtype_subject;
 };
 
-export default classtype_subject;
+module.exports = classtype_subject;
+
+

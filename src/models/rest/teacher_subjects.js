@@ -42,4 +42,6 @@ const teacher_subject = (sequelize, DataTypes) => {
     return Teacher_subject;
 };
 
-export default teacher_subject;
+module.exports = teacher_subject;
+
+

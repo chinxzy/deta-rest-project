@@ -45,4 +45,6 @@ const classname = (sequelize, DataTypes) => {
     return Classname;
 };
 
-export default classname;
+module.exports = classname;
+
+

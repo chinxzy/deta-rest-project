@@ -28,4 +28,6 @@ const classtype = (sequelize, DataTypes) => {
     return Classtype;
 };
 
-export default classtype;
+module.exports = classtype;
+
+

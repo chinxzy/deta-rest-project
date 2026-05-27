@@ -1,10 +1,10 @@
 
 
-import { Router } from 'express';
+const { Router } = require('express');
 // const auth = require('../utils/isAuthenticated');
 
 
-import * as subject from '../controllers/subject.controller.js';
+const subject = require('../controllers/subject.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -15,17 +15,42 @@ const router = Router();
  *       required:
  *         - subjectId
  *         - subject_name
- *         
+ *         - code
  *       properties:
  *         subject_name:
  *           type: string
- *           description: The  name of the subject
- *      
+ *           description: The name of the subject
+ *         code:
+ *           type: string
+ *           description: The code of the subject
+ *         classtypeId:
+ *           type: array
+ *           items:
+ *             type: string
+ *             format: uuid
+ *           description: Array of classtype IDs to link to the subject
+ *
  */
 /**
  * @swagger
  * /subject:
  *   get:
+ *     parameters:
+ *       - in: query
+ *         name: classtype
+ *         schema:
+ *           type: string
+ *         description: The class type to filter subjects
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The number of items per page
  *     summary: gets all subjects
  *     tags:
  *       - subject
@@ -78,6 +103,32 @@ const router = Router();
  *       500:
  *         description: Some server error
  * 
+ * /subject/update/{subjectId}:
+ *   put:
+ *     tags:
+ *       - subject
+ *     summary: Update a subject entry
+ *     parameters:
+ *       - in: path
+ *         name: subjectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/subject'
+ *     responses:
+ *       200:
+ *         description: Subject updated successfully
+ *       404:
+ *         description: Subject not found
+ *       500:
+ *         description: Some server error
+ * 
  */
 
 router.get('/', subject.getAllSubjects)
@@ -86,8 +137,12 @@ router.get('/:id', subject.getSubject);
 
 router.post('/createSubject', subject.createSubject);
 
+router.put('/update/:id', subject.updateSubject);
+
 // router.post('/delete', user.deleteUser);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   development: {
     databases: {
       rest: {
@@ -24,3 +24,5 @@ export default {
     },
   },
 };
+
+

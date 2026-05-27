@@ -1,10 +1,10 @@
 
 
-import { Router } from 'express';
+const { Router } = require('express');
 // const auth = require('../utils/isAuthenticated');
 
 
-import * as classtype from '../controllers/classtype.controller.js';
+const classtype = require('../controllers/classtype.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -72,4 +72,6 @@ router.post('/createClasstype', classtype.createClasstype);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

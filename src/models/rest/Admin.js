@@ -42,4 +42,6 @@ const admin = (sequelize, DataTypes) => {
     return Admin;
 };
 
-export default admin;
+module.exports = admin;
+
+

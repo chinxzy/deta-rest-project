@@ -36,4 +36,6 @@ const subject = (sequelize, DataTypes) => {
     return Subject;
 };
 
-export default subject;
+module.exports = subject;
+
+

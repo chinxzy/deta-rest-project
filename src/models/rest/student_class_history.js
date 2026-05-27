@@ -56,4 +56,6 @@ const student_class_history = (sequelize, DataTypes) => {
     return Student_class_history;
 };
 
-export default student_class_history;
+module.exports = student_class_history;
+
+

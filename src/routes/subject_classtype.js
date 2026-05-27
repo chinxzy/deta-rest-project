@@ -1,10 +1,10 @@
 
 
-import { Router } from 'express';
+const { Router } = require('express');
 // const auth = require('../utils/isAuthenticated');
 
 
-import * as subType from '../controllers/subject_classtype.controller.js';
+const subType = require('../controllers/subject_classtype.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -103,4 +103,6 @@ router.post('/createSubtype', subType.createSubType);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

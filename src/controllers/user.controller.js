@@ -1,12 +1,12 @@
-import db from '../models/index.js';
-import Sequelize, { Op } from 'sequelize';
+const db = require('../models/index.js');
+const { Sequelize, Op } = require('sequelize');
 const User = db.rest.models.student;
 const Classname = db.rest.models.classname;
 const Teacher = db.rest.models.teacher;
 const Classtype = db.rest.models.classtype
 
 //get all students
-export const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   const gender = req.query.gender
 
   const allUsers = await User.findAll({
@@ -78,7 +78,7 @@ export const getAllUsers = async (req, res) => {
 
 //get single student
 
-export const getUser = async (req, res) => {
+const getUser = async (req, res) => {
   const studentId = req.params.id;
   console.log(studentId)
 
@@ -130,7 +130,7 @@ export const getUser = async (req, res) => {
 
 //create student
 
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
   const { firstname, lastname, gender, classnameId } = req.body;
   if (!firstname || !lastname || !gender || !classnameId) {
     return res.status(400).send({
@@ -219,3 +219,5 @@ export const createUser = async (req, res) => {
 //     });
 //   }
 // };
+module.exports = { getAllUsers, getUser, createUser };
+

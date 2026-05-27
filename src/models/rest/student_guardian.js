@@ -46,4 +46,6 @@ const student_guardian = (sequelize, DataTypes) => {
     return Student_guardian;
 };
 
-export default student_guardian;
+module.exports = student_guardian;
+
+

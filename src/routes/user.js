@@ -1,9 +1,9 @@
 
 
-import { Router } from 'express';
-// import { isAuthenticated } from './utils/isAuthenticated';
+const { Router } = require('express');
+// const { isAuthenticated } = require('./utils/isAuthenticated');
 
-import * as user from '../controllers/user.controller.js';
+const user = require('../controllers/user.controller.js');
 const router = Router();
 /**
  * @swagger
@@ -131,4 +131,6 @@ router.post('/createUser', user.createUser);
 
 // router.post('/update/:id', user.updateUser);
 
-export default router;
+module.exports = router;
+
+

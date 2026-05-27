@@ -1,14 +1,16 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import routes from './routes/index.js';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+require('dotenv/config');
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const routes = require('./routes/index.js');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const { initializeDb } = require('./models/index.js');
 
-// import { isAuthenticated } from './utils/isAuthenticated';
+// const { isAuthenticated } = require('./utils/isAuthenticated');
 
 const app = express();
+const port = process.env.PORT || 4002;
 
 // const accessLogStream = fs.createWriteStream(
 //   path.join(__dirname, '../access.log'),
@@ -55,7 +57,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:4002",
+        url: `http://localhost:${port}`,
 
       },
     ],
@@ -71,6 +73,15 @@ app.use(
   swaggerUi.setup(specs, { explorer: true })
 );
 
-app.listen(4002, () => {
-  console.log(`Example app listening on port 4002!`);
-});
+(async () => {
+  try {
+    await initializeDb();
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}!`);
+    });
+  } catch (err) {
+    console.error('Failed to initialize database:', err);
+    process.exit(1);
+  }
+})();
+

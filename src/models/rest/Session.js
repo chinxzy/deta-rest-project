@@ -38,4 +38,6 @@ const session = (sequelize, DataTypes) => {
     return Session;
 };
 
-export default session;
+module.exports = session;
+
+

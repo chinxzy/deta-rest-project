@@ -1,11 +1,11 @@
-import user from './user.js';
-import teacher from './teacher.js';
-import admin from './admin.js';
-import subject from './subject.js';
-import classname from './classname.js';
-import classtype from './classtype.js';
-import subtype from './subject_classtype.js';
-export default {
+const user = require('./user.js');
+const teacher = require('./teacher.js');
+const admin = require('./admin.js');
+const subject = require('./subject.js');
+const classname = require('./classname.js');
+const classtype = require('./classtype.js');
+const subtype = require('./subject_classtype.js');
+module.exports = {
   user,
   teacher,
   admin,
@@ -14,3 +14,5 @@ export default {
   classtype,
   subtype
 };
+
+

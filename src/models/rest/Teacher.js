@@ -49,4 +49,6 @@ const teacher = (sequelize, DataTypes) => {
     return Teacher;
 };
 
-export default teacher;
+module.exports = teacher;
+
+

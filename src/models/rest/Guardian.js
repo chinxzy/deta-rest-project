@@ -42,4 +42,6 @@ const guardian = (sequelize, DataTypes) => {
     return Guardian;
 };
 
-export default guardian;
+module.exports = guardian;
+
+

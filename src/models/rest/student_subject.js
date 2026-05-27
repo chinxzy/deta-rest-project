@@ -40,4 +40,6 @@ const student_subject = (sequelize, DataTypes) => {
     return Student_subject;
 };
 
-export default student_subject;
+module.exports = student_subject;
+
+
